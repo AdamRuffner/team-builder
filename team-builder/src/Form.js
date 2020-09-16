@@ -7,7 +7,7 @@ export default function Form(props){
 
   
 
-     const change = evt => {
+     const onChange = evt => {
          const {name, value} = evt.target
         update(name, value)
      }
@@ -20,12 +20,12 @@ export default function Form(props){
 
 
     return(
-        <form>
+        <form onSubmit={onSubmit}>
             <label>Name:
                 <input 
                 type ='text'
                 name ='name'
-                change={change}
+                onChange={onChange}
                 value={values.name}
                 placeholder='name'
                 />
@@ -35,20 +35,19 @@ export default function Form(props){
                 <input 
                 type ='email'
                 name='email'
-                change={change}
-                vaule={values.email}
+                onChange={onChange}
+                value={values.email}
                 placeholder='email'
                 />
             </label>
 
             <label>Role:
-                <input 
-                type ='text'
-                name='role'
-                change={change}
-                value={values.role}
-                placeholder='role'
-                />
+                <select name='role' value={values.role} onChange={onChange} >
+                <option value=''>--select role--</option>
+                <option value='FrontEnd'>--FrontEnd--</option>
+                <option value='BackEnd'>--BackEnd--</option>
+                <option value='Designer'>--Designer--</option>
+                </select>
             </label>
             <div className='submit'>
                 <button>Submit</button>

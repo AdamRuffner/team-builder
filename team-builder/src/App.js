@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Form from './Form'
+import axios from './Axios'
+import Member from './Member'
 
 const initialFormValues = {
   name: '',
@@ -10,7 +12,7 @@ const initialFormValues = {
 }
 
 function App() {
-  const [teamMembers, setTeamMembers] = useState([])
+  const [members, setMembers] = useState([])
 
   const [formValues, setFormValues] = useState(initialFormValues)
 
@@ -23,9 +25,26 @@ function App() {
       name: formValues.name.trim(),
       email: formValues.email.trim(),
       role: formValues.role.trim(),
-    
     }
+
+    if (!newMember.name || !newMember.email || !newMember.role){
+      return
+    }
+
+    axios.post('fakeapi.com', newMember)
+      .then(res => {
+        setMembers([res.data, ...members])
+        setFormValues(initialFormValues)
+      })
+      .catch(err => {
+        
+      })
   }
+
+  useEffect(() => {
+    axios.get('fakeapi.com')
+    .then(res => setMembers(res.data))
+  }, [])
 
   return (
     <div className="App">
@@ -36,7 +55,16 @@ function App() {
       update={updateForm}
       submit={submitForm}
      />
+
+      {
+        members.map(member => {
+          return (
+            <Member key={member.id} details={member} />
+          )
+        })
+      }
     </div>
+    
   );
 }
 
